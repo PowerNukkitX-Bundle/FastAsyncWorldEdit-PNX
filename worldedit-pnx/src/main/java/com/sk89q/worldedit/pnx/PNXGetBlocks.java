@@ -68,12 +68,18 @@ public class PNXGetBlocks extends CharGetBlocks {
         this.serverLevel = serverLevel;
         this.chunkX = chunkX;
         this.chunkZ = chunkZ;
-        //-63 - 320
         this.minHeight = serverLevel.getMinHeight() + 1;
         this.maxHeight = serverLevel.getMaxHeight();
         this.minSectionPosition = this.minHeight / 16;
         this.maxSectionPosition = this.maxHeight / 16;
-        this.pnxChunk = (cn.nukkit.level.format.anvil.Chunk) serverLevel.getChunk(chunkX, chunkZ);
+
+        Chunk chunk = (Chunk) serverLevel.getChunk(chunkX, chunkZ);
+        if (chunk == null || !chunk.isGenerated()) {
+            serverLevel.generateChunk(chunkX, chunkZ);
+            chunk = (Chunk) serverLevel.getChunk(chunkX, chunkZ);
+        }
+
+        this.pnxChunk = chunk;
         this.pnxChunkSections = this.pnxChunk.getSections();
     }
 
