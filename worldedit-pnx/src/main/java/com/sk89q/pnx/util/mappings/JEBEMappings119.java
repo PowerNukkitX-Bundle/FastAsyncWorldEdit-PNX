@@ -3,11 +3,14 @@ package com.sk89q.pnx.util.mappings;
 import cn.nukkit.item.Item;
 import com.google.common.collect.HashBiMap;
 import com.google.gson.GsonBuilder;
+import com.nimbusds.jose.shaded.json.JSONObject;
+import com.sk89q.worldedit.internal.util.LogManagerCompat;
 import com.sk89q.worldedit.pnx.PNXWorldEditPlugin;
 import com.sk89q.worldedit.util.io.ResourceLoader;
 import com.sk89q.worldedit.world.biome.BiomeType;
 import com.sk89q.worldedit.world.item.ItemType;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,9 +19,11 @@ import java.net.URL;
 import java.util.Map;
 import java.util.Objects;
 
+
 @SuppressWarnings("unchecked")
 public final class JEBEMappings119 {
 
+    private static final Logger LOGGER = LogManagerCompat.getLogger();
     private static final GsonBuilder builder = new GsonBuilder();
     public static final Map<String, cn.nukkit.blockstate.BlockState> BLOCKS_MAPPING1 = new Object2ObjectOpenHashMap<>();
     public static final Map<cn.nukkit.blockstate.BlockState, String> BLOCKS_MAPPING2 = new Object2ObjectOpenHashMap<>();
@@ -55,8 +60,12 @@ public final class JEBEMappings119 {
                         }
                     });
                 }
-                JEBEMappings119.BLOCKS_MAPPING1.put(k, cn.nukkit.blockstate.BlockState.of(name + nkState));
-                JEBEMappings119.BLOCKS_MAPPING2.put(cn.nukkit.blockstate.BlockState.of(name + nkState), k);
+                try {
+                    JEBEMappings119.BLOCKS_MAPPING1.put(k, cn.nukkit.blockstate.BlockState.of(name + nkState));
+                    JEBEMappings119.BLOCKS_MAPPING2.put(cn.nukkit.blockstate.BlockState.of(name + nkState), k);
+                } catch (Exception e) {
+                    LOGGER.warn("key=" + k + ",value=" + JSONObject.toJSONString(v) + ",error=" + e.getMessage());
+                }
             });
             JEBEMappings119.BLOCKS_MAPPING2.put(
                     cn.nukkit.blockstate.BlockState.of("minecraft:flowing_lava;liquid_depth=0"),
