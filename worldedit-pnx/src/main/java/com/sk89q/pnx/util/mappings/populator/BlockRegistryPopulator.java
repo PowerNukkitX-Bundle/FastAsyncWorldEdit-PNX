@@ -74,6 +74,9 @@ public final class BlockRegistryPopulator {
             );
             Object2ObjectOpenHashMap<cn.nukkit.block.BlockState, com.sk89q.worldedit.world.block.BlockState> PNX2FAWE = new Object2ObjectOpenHashMap<>();
             blocks.forEach((k, v) -> {
+
+                if (k.contains("minecraft:trial_spawner") || k.contains("minecraft:mob_spawner") || k.contains("minecraft:vault")) return;
+
                 final TreeMapCompoundTag treeMapCompoundTag = new TreeMapCompoundTag();
                 var name = v.get("bedrock_identifier").toString();
                 treeMapCompoundTag.putString("name", name);
@@ -97,7 +100,8 @@ public final class BlockRegistryPopulator {
                 final CompoundTag remappedTag = mapper.remap(treeMapCompoundTag);
                 final int i = HashUtils.fnv1a_32_nbt(remappedTag);
                 cn.nukkit.block.BlockState pnxBlockState = Registries.BLOCKSTATE.get(i);
-                if (pnxBlockState == null && !experimentalBlocks.contains(remappedTag.getString("name"))) {
+
+                if (pnxBlockState == null && !experimentalBlocks.contains(remappedTag.getString("name")) ){
                     PNXWorldEditPlugin
                             .getInstance()
                             .getLogger()

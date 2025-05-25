@@ -19,6 +19,8 @@
 
 package com.sk89q.worldedit.pnx.registry;
 
+import cn.nukkit.network.protocol.types.biome.BiomeDefinition;
+import cn.nukkit.network.protocol.types.biome.BiomeDefinitionData;
 import cn.nukkit.registry.Registries;
 import com.sk89q.worldedit.pnx.PNXAdapter;
 import com.sk89q.worldedit.util.formatting.text.Component;
@@ -50,8 +52,8 @@ class PNXBiomeRegistry implements BiomeRegistry {
     @Override
     public BiomeData getData(BiomeType biome) {
         final int adapt = PNXAdapter.adapt(biome);
-        final cn.nukkit.registry.BiomeRegistry.BiomeDefinition biomeDefinition = Registries.BIOME.get(adapt);
-        return biomeDefinition == null ? null : biomeDefinition::name_hash;
+        final BiomeDefinition biomeDefinition = Registries.BIOME.get(adapt);
+        return biomeDefinition == null ? null : biomeDefinition::getName;
     }
 
 }
