@@ -14,6 +14,10 @@ repositories {
     maven("https://jitpack.io")
     maven("https://repo.opencollab.dev/maven-releases/")
     maven("https://repo.opencollab.dev/maven-snapshots/")
+    maven {
+        name = "powerNukkitXReleases"
+        url = uri("https://repo.powernukkitx.org/releases")
+    }
     flatDir { dir(File("src/main/resources")) }
 }
 
@@ -24,7 +28,7 @@ val localImplementation = configurations.create("localImplementation") {
 }
 
 dependencies {
-    compileOnly("com.github.PowerNukkitX:PowerNukkitX:master-SNAPSHOT") {
+    compileOnly("org.powernukkitx:server:2.0.0-SNAPSHOT") {
         exclude("junit", "junit")
         exclude(group = "org.slf4j", module = "slf4j-api")
     }
